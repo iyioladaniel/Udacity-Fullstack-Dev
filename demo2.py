@@ -19,8 +19,8 @@ cur = conn.cursor()
 #            ''')
 
 #Insert new records into dbtable2 using string interpolation
-#cur.execute('INSERT INTO dbtable2 (id, completed) VALUES (%s, %s);',\
- #   (2,True))
+cur.execute('INSERT INTO dbtable2 (id, completed) VALUES (%s, %s);',\
+    (2,True))
 
 SQL = 'INSERT INTO dbtable2 (id, completed) VALUES (%(id)s, %(completed)s);'
 data = {

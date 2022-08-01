@@ -19,15 +19,28 @@ cur = conn.cursor()
 #            ''')
 
 #Insert new records into dbtable2 using string interpolation
-cur.execute('INSERT INTO dbtable2 (id, completed) VALUES (%s, %s);',\
-    (2,True))
+#cur.execute('INSERT INTO dbtable2 (id, completed) VALUES (%s, %s);',\
+#    (2,True))
 
 SQL = 'INSERT INTO dbtable2 (id, completed) VALUES (%(id)s, %(completed)s);'
 data = {
     'id':3,
     'completed':True
 }
-cur.execute(SQL,data)
+#cur.execute(SQL,data)
+
+cur.execute('SELECT * FROM dbtable2')
+result = cur.fetchall()
+print(result)
+
+result2 = cur.fetchone()
+print('fetchone',result2)
+
+result3 = cur.fetchmany(2)
+print('fetchmany(2)',result3)
+
+result4 = cur.fetchone()
+print('fetchone',result4)
 
 #commit the transactions to the database
 conn.commit()

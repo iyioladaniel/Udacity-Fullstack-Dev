@@ -29,6 +29,7 @@ data = {
 }
 #cur.execute(SQL,data)
 
+#Using Fetch methods
 cur.execute('SELECT * FROM dbtable2')
 result = cur.fetchall()
 print(result)
@@ -41,6 +42,12 @@ print('fetchmany(2)',result3)
 
 result4 = cur.fetchone()
 print('fetchone',result4)
+
+#Using loop to print Select statement
+cur.execute('SELECT * FROM dbtable2')
+for records in cur:
+    print(records)
+
 
 #commit the transactions to the database
 conn.commit()

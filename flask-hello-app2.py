@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
@@ -29,4 +30,8 @@ db.create_all()
 
 #run application by calling path if no module imported, run app
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    #set debug to true
+    app.debug = True
+    
+    #run application
+    app.run(host="0.0.0.0", port=3000)

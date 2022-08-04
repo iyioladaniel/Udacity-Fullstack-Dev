@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_sqlalchemy inmport SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
@@ -7,7 +7,7 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 
 #Connect to db with flask by set configuration variable
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/dbname']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/dbname'
 
 #currently db is an interface for interacting with our database
 #db.Model lets us create & manipulate data models
@@ -31,4 +31,8 @@ db.create_all()
 #run application with python decorator
 @app.route('/')
 def index():
-    return "Hello World!"
+    #create new object as first record in table persons
+    person = Person.query.first()
+    
+    #return Hello and name attribute in person
+    return "Hello " + person.name

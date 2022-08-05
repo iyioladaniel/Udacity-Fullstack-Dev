@@ -1,0 +1,15 @@
+SQLAlchemy specifies __init__ when you instantiate a class and define the attributes.
+
+-To read your flask app in your interactive python, you need to rename your 
+flask app to be in neat format (Camel case).
+
+To add new record using python3 interactive
+person = Person(name='Amy')
+db.session.add(person)
+db.session.commit()
+
+SQLAlchemy datatypes
+https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
+
+SQLAlchemy Constraints
+https://docs.sqlalchemy.org/en/latest/core/constraints.html

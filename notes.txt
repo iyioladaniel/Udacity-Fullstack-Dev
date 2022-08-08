@@ -13,3 +13,9 @@ https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
 
 SQLAlchemy Constraints
 https://docs.sqlalchemy.org/en/latest/core/constraints.html
+
+Bulk insert
+https://github.com/crazyguitar/pysheeet/blob/master/docs/notes/python-sqlalchemy.rst#fastest-bulk-insert-in-postgresql-via-copy-statement
+
+
+

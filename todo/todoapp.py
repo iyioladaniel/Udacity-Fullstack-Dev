@@ -32,16 +32,18 @@ class Todo(db.Model):
     todo = db.Column(db.String(),nullable=False, unique=False)
     #create name column
     description = db.Column(db.String(), nullable=True)
+    completed = db.Column(db.Boolean, nullable=True, default=False)
     
     #use this attribute to debug
     def __repr__(self):
         return f'<Person ID: {self.id}, name: {self.todo}, desc: {self.description}>'
     
 #create table command - creates table if table doesn't exist
-db.create_all()
+#comment out db.create since we are using migrations now.
+#db.create_all()
 
-todo1 = Todo(todo="UAT form", description="I need to create a form to collect feedback for Intranet UAT")
-db.session.add(todo1)
+#todo1 = Todo(todo="UAT form", description="I need to create a form to collect feedback for Intranet UAT")
+#db.session.add(todo1)
 db.session.commit()
 
 '''

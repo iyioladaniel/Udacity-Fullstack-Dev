@@ -32,7 +32,7 @@ class Todo(db.Model):
     todo = db.Column(db.String(),nullable=False, unique=False)
     #create name column
     description = db.Column(db.String(), nullable=True)
-    completed = db.Column(db.Boolean, nullable=True, default=False)
+    completed = db.Column(db.Boolean, nullable=False, default=False)
     
     #use this attribute to debug
     def __repr__(self):

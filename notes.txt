@@ -8,6 +8,9 @@ person = Person(name='Amy')
 db.session.add(person)
 db.session.commit()
 
+#create db in psql
+createdb dbname
+
 SQLAlchemy datatypes
 https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
 
@@ -18,4 +21,24 @@ Bulk insert
 https://github.com/crazyguitar/pysheeet/blob/master/docs/notes/python-sqlalchemy.rst#fastest-bulk-insert-in-postgresql-via-copy-statement
 
 
+Transient >> Pending >> Flushing >> commit
 
+Pending objects >> session flush >> session commit
+
+Flask-Migrate works llike git for databases i.e. version control
+Flask-Migrate manages migrations. Flask-Script lets us run them. 
+We need Flask-Script in order to apply the migrations that we define using Flask-Migrate.
+
+Flask-Migrate documentation
+https://flask-migrate.readthedocs.io/en/latest/
+
+Alembic documentation
+https://alembic.sqlalchemy.org/en/latest/
+
+Command to initiate Migrations
+flask db init
+
+-Detects changes to be made and creates migration file with upgrade & downgrade logic
+flask db migrate
+flask db upgrade
+flask db downgrade

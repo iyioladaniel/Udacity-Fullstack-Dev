@@ -2,6 +2,9 @@ from email.policy import default
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
+from flask_migrate import Migrate
+
+
 
 app = Flask(__name__)
 
@@ -13,6 +16,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhos
 
 #turn of SQLAlchemy track notifications
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+migrate = Migrate(app,db)
 
 #currently db is an interface for interacting with our database
 #db.Model lets us create & manipulate data models

@@ -1,4 +1,6 @@
-from flask import Flask
+from os import abort
+import sys
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from flask_migrate import Migrate
@@ -31,8 +33,8 @@ class Todo(db.Model):
     #short name for todo
     todo = db.Column(db.String(),nullable=False, unique=False)
     #create name column
-    description = db.Column(db.String(), nullable=True)
-    completed = db.Column(db.Boolean, nullable=False, default=False)
+    description = db.Column(db.String(), nullable=False)
+    completed = db.Column(db.Boolean, default=False, nullable=True)
     
     #use this attribute to debug
     def __repr__(self):
@@ -44,16 +46,39 @@ class Todo(db.Model):
 
 #todo1 = Todo(todo="UAT form", description="I need to create a form to collect feedback for Intranet UAT")
 #db.session.add(todo1)
-db.session.commit()
+#db.session.commit()
 
-'''
+
 #run application with python decorator
+@app.route('/todo/create', methods=['POST'])
+def create_todo():
+    body={}
+    error = False
+    try:
+        todos = request.get_json()['todo']
+        description = request.get_json()['description']
+        todo = Todo(todo=todos, description=description)
+        body['description'] = todo.description
+        body['todo'] = todo.todo
+        db.session.add(todo)
+        db.session.commit()
+    except:
+        error=True
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        db.session.close()
+        if error ==  True:
+            abort(400)
+        else:
+            return jsonify(body)
+
+
+
 @app.route('/')
 def index():
-    #create new object as first record in table persons
-    todo_view = Todo.query.first()
-    
-    #return Hello and name attribute in person
-    return "Hello " + todo_view.todo + "\nHere's the description: " + todo_view.description
+    return render_template('index_html', data=Todo.query.all())
 
-'''
+#always include this at the bottom of your code
+if __name__ == '__main__':
+   app.run(host="0.0.0.0", port=3000)

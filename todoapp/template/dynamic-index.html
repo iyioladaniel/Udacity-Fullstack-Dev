@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Todo App</title>
+    </head>
+    <body>
+        <ul>
+            {% for d in data %}
+            <li>{{ d.todo, d.description}}</li>
+            {% endfor %}
+        </ul>
+        <dl>
+            {% for d in data %}
+            <dt>{{ d.todo }}</dt>
+            <dd>{{- d.description}}</dd>
+            {% endfor %}
+        </dl>
+    </body>
+</html>

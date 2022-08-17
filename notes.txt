@@ -42,3 +42,9 @@ flask db init
 flask db migrate
 flask db upgrade
 flask db downgrade
+
+CRUD in SQLAlchemy
+Create -> INSERT -> db.session.add(user1)
+Read -> SELECT -> User.query.all()
+Update -> UPDATE -> user1.foo = 'new value'
+Delete -> DELETE -> db.session.delete(user1)

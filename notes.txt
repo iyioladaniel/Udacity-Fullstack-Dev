@@ -48,3 +48,20 @@ Create -> INSERT -> db.session.add(user1)
 Read -> SELECT -> User.query.all()
 Update -> UPDATE -> user1.foo = 'new value'
 Delete -> DELETE -> db.session.delete(user1)
+
+MVC
+Models: manage data and business logic
+View: data representation & view logic
+Controller: Contro logic, notifying model & views
+
+- Getting user data in Flask
+URL query parameters using request.args.get('field','default')
+Form inputs using request.form.get() (also accepts a default) or request.form[]
+data type (ie. application/json) use request.data
+    data_string = request.data
+    data_dictionary = json.loads(data_string)
+
+in your input tag, value = , name = (name is the data that you want to get)
+POST sends data as form inputs
+GET sends data as URL query parameters
+

@@ -1,17 +1,34 @@
+<form action="/todoapp/create" method="post">
+    <div>
+        <label for="title">Todo Title</label>
+        <input type="text" name="title">
+    </div>
+    <div>
+        <p>
+            <label for="description">Todo Description</label>
+            <input type="text" name="description">    
+        </p>
+    </div>
+    <div>
+        <p>
+            <input type="submit" id="submit" value="Create" />
+        </p>
+    </div>
+</form>
 <html>
     <head>
         <title>Todo App</title>
     </head>
     <body>
         <ul>
-            {% for d in data %}
-            <li>{{ d.todo, d.description}}</li>
+            {% for d in data() %}
+            <li>{{ d.title, d.description}}</li>
             {% endfor %}
         </ul>
         <dl>
-            {% for d in data %}
-            <dt>{{ d.todo }}</dt>
-            <dd>{{- d.description}}</dd>
+            {% for d in data() %}
+            <dt>{{ d.title }}</dt>
+            <dd>{{- d.description }}</dd>
             {% endfor %}
         </dl>
     </body>

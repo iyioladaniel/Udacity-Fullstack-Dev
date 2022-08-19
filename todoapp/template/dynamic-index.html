@@ -1,35 +1,78 @@
-<form action="/todoapp/create" method="post">
-    <div>
-        <label for="title">Todo Title</label>
-        <input type="text" name="title">
-    </div>
-    <div>
-        <p>
-            <label for="description">Todo Description</label>
-            <input type="text" name="description">    
-        </p>
-    </div>
-    <div>
-        <p>
-            <input type="submit" id="submit" value="Create" />
-        </p>
-    </div>
-</form>
 <html>
     <head>
         <title>Todo App</title>
+        <style>
+            .hidden {
+                display: none;
+            }
+        </style>
     </head>
     <body>
-        <ul>
+        <form id='form' action='/todoapp/create' method="POST">
+            <div>
+                <label for='title'>Todo Title</label>
+                <input id='title' type='text' name='title'>
+            </div>
+            <div>
+                <p>
+                    <label for='description'>Todo Description</label>
+                    <input id='description' type='text' name='description'>    
+                </p>
+            </div>
+            <div>
+                <p>
+                    <input type='submit' id='submit' value='Create' />
+                </p>
+            </div>
+        </form>
+        <div id='error' class='hidden'>Something went wrong!</div>
+        <ul id='todoapp1'>
             {% for d in data() %}
             <li>{{ d.title, d.description}}</li>
             {% endfor %}
         </ul>
-        <dl>
+        <dl id='todoapp2'>
             {% for d in data() %}
             <dt>{{ d.title }}</dt>
             <dd>{{- d.description }}</dd>
             {% endfor %}
         </dl>
+        <script>
+            document.getElementById('form').onsubmit = function(e){
+                e.preventDefault();
+                fetch('/todoapp/create', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        'title': document.getElementById('title').value,
+                        'description': document.getElementById('description').value
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(function(response){
+                    return response.json();
+                })
+                .then(function(jsonResponse) {
+                    console.log(jsonResponse);
+                    const liItem = document.createElement('LI');
+                    liItem.innerHTML = jsonResponse['title'];
+                    document.getElementById('todoapp1').appendChild(liItem);
+
+                    const dtItem = document.createElement('DT');
+                    dtItem.innerHTML = jsonResponse['title'];
+                    document.getElementById('todoapp2').appendChild(dtItem);
+
+                    const ddItem = document.createElement('DD');
+                    ddItem.innerHTML = jsonResponse['description'];
+                    document.getElementById('todoapp2').appendChild(ddItem);
+
+                    document.getElementById('error').className='hidden';
+                })
+                .catch(function(){
+                    document.getElementById('error').className='';
+                })
+            }
+        </script>
     </body>
 </html>

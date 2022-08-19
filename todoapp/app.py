@@ -23,17 +23,20 @@ class Todo(db.Model):
 
 db.create_all()
 
-@app.route("/todoapp/create",methods=['POST'])
+@app.route('/todoapp/create', methods=['POST'])
 def create():
-    title1 = request.form.get('title')
-    desc1 = request.form['description']
+    title1 = request.get_json()['title']
+    desc1 = request.get_json()['description']
 
     todo1 = Todo(title=title1,description=desc1)
     db.session.add(todo1)
     db.session.commit()
 
    #return render_template('dynamic-index.html',data=Todo.query.all)
-    return redirect(url_for('index'))
+    return jsonify({
+        'title':todo1.title,
+        'description': todo1.description
+    })
 
 
 @app.route("/")

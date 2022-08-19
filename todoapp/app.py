@@ -2,6 +2,7 @@
 from flask import Flask, redirect, render_template, request, url_for, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import requests
+import sys
 
 #create new flask app with html templates in template folder
 app = Flask(__name__,template_folder='template')
@@ -11,6 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhos
 
 #instatiate db with sql alchemy
 db = SQLAlchemy(app)
+#db = SQLAlchemy(app, session_options={"expire_on_commit":False})
 
 class Todo(db.Model):
     __tablename__ = 'todos'
@@ -25,18 +27,29 @@ db.create_all()
 
 @app.route('/todoapp/create', methods=['POST'])
 def create():
-    title1 = request.get_json()['title']
-    desc1 = request.get_json()['description']
+    error = False
+    body = {}
+    try:
+        title1 = request.get_json()['title']
+        desc1 = request.get_json()['description']
 
-    todo1 = Todo(title=title1,description=desc1)
-    db.session.add(todo1)
-    db.session.commit()
+        todo1 = Todo(title=title1,description=desc1)
+        db.session.add(todo1)
+        db.session.commit()
 
-   #return render_template('dynamic-index.html',data=Todo.query.all)
-    return jsonify({
-        'title':todo1.title,
-        'description': todo1.description
-    })
+        body['title'] = todo1.title
+        body['description'] = todo1.description
+    #return render_template('dynamic-index.html',data=Todo.query.all)
+
+    except:
+        error = True
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        db.session.close()
+    if not error:
+        return jsonify(body)
+
 
 
 @app.route("/")

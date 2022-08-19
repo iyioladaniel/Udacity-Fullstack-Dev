@@ -56,7 +56,7 @@
                 .then(function(jsonResponse) {
                     console.log(jsonResponse);
                     const liItem = document.createElement('LI');
-                    liItem.innerHTML = jsonResponse['title'];
+                    liItem.innerHTML = jsonResponse[('title','description')];
                     document.getElementById('todoapp1').appendChild(liItem);
 
                     const dtItem = document.createElement('DT');

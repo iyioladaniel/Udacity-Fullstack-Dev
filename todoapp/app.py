@@ -1,8 +1,10 @@
 #import important modules
-from flask import Flask, redirect, render_template, request, url_for, abort, jsonify
-from flask_sqlalchemy import SQLAlchemy
-import requests
 import sys
+from flask_migrate import Migrate
+import requests
+from flask import (Flask, abort, jsonify, redirect, render_template, request,
+                   url_for)
+from flask_sqlalchemy import SQLAlchemy
 
 #create new flask app with html templates in template folder
 app = Flask(__name__,template_folder='template')
@@ -14,11 +16,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhos
 db = SQLAlchemy(app)
 #db = SQLAlchemy(app, session_options={"expire_on_commit":False})
 
+migrate = Migrate(app,db)
+
 class Todo(db.Model):
     __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(), nullable=False)
     description = db.Column(db.String(), nullable=False)
+    completed = db.Column(db.Boolean,nullable=True, default=False)
 
     def __repr__(self):
         return f'<Todo {self.id} {self.title} {self.description}'
@@ -52,6 +57,18 @@ def create():
     else:
         return jsonify(body)
 
+@app.route('/todoapp/<todo_id>/set-completed', methods=['POST'])
+def set_completed_todo(todo_id):
+    try:
+        completed = request.get_json()['completed']
+        todo = Todo.query.get(todo_id)
+        todo.completed = completed
+        db.session.commit()
+    except: 
+        db.session.rollback()
+    finally:
+        db.session.close()
+    return redirect(url_for('index'))
 
 
 @app.route("/")

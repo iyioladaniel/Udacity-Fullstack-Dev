@@ -3,7 +3,7 @@ import sys
 from flask_migrate import Migrate
 import requests
 from flask import (Flask, abort, jsonify, redirect, render_template, request,
-                   url_for)
+                   url_for, make_response)
 from flask_sqlalchemy import SQLAlchemy
 
 #create new flask app with html templates in template folder
@@ -23,7 +23,7 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(), nullable=False)
     description = db.Column(db.String(), nullable=False)
-    completed = db.Column(db.Boolean,nullable=True, default=False)
+    completed = db.Column(db.Boolean,nullable=False, default=False)
 
     def __repr__(self):
         return f'<Todo {self.id} {self.title} {self.description}'
@@ -70,10 +70,20 @@ def set_completed_todo(todo_id):
         db.session.close()
     return redirect(url_for('index'))
 
+@app.route('/todoapp/<todo_id>/delete', methods=['DELETE'])
+def set_delete_todo(todo_id):
+    try:
+        Todo.query.filter_by(id=todo_id).delete()
+        db.session.commit()
+    except: 
+        db.session.rollback()
+    finally:
+        db.session.close()
+    return make_response(jsonify({'success': True}), 201)
 
 @app.route("/")
 def index():
-    return render_template('dynamic-index.html', data=Todo.query.all)
+    return render_template('dynamic-index.html', todos=Todo.query.order_by(Todo.id).all)
 
 
 if __name__ == '__main__':

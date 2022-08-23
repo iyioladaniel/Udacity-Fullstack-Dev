@@ -89,3 +89,35 @@ Update in SQLAlchemy
 user = User.query.get(some_id)
 user.name = 'Some new name'
 db.session.commit()
+
+Delete in SQLAlchemy
+todo = Todo.query.get(todo_id) 
+db.session.delete(todo) # or...
+Todo.query.filter_by(id=todo_id).delete()
+db.session.commit()
+
+db.relationship
+https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/#simple-relationships
+https://docs.sqlalchemy.org/en/latest/orm/relationship_api.html#sqlalchemy.orm.relationship
+
+class SomeParent(db.Model):
+    id
+    name
+    children = db.relationship('childClass', backref='some_parent', lazy=True or 'select')
+
+class SomeChild(db.Model):
+    id
+    name
+    some_parent_id = db.Column(db.ForeignKey('some_parent_id))
+
+backref is to customize method e.g. child.some_parent
+
+Lazy loading vs Eager loading
+Lazy loading is default. only join when you need it.
+
+Eager loading is calling all future joins initially causing an upfront load time.
+(lazy='joined')
+
+collection_class = list, set, dict
+cascade = 'save-update' || 'all' || 'delete-orphan'
+
